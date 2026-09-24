@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LVL UP — لوحة التحكم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Orbitron:wght@600;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dash-page">
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <span class="lvl">LVL</span><span class="up">UP</span>
+    </div>
+    <div class="brand-text">
+      <h1>LVL UP MANAGER</h1>
+      <small>Squad Auto Level-Up — Web Edition</small>
+    </div>
+  </div>
+
+  <div class="user-area">
+    <div class="user-chip">
+      <span class="dot"></span>
+      <span>{{ user }}</span>
+    </div>
+    <a href="{{ url_for('logout') }}" class="btn-logout">خروج</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-body">
+        <div class="stat-label">إجمالي الحسابات</div>
+        <div class="stat-value" id="stat-total">0</div>
+      </div>
+    </div>
+    <div class="stat-card running">
+      <div class="stat-icon">▶️</div>
+      <div class="stat-body">
+        <div class="stat-label">قيد التشغيل</div>
+        <div class="stat-value" id="stat-running">0</div>
+      </div>
+    </div>
+    <div class="stat-card gain">
+      <div class="stat-icon">🔝</div>
+      <div class="stat-body">
+        <div class="stat-label">لفلات مكتسبة</div>
+        <div class="stat-value" id="stat-levels">0</div>
+      </div>
+    </div>
+    <div class="stat-card pulse">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-body">
+        <div class="stat-label">حالة المحرك</div>
+        <div class="stat-value mini" id="stat-engine">جاهز</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROLS -->
+  <section class="controls">
+    <button class="btn btn-success" onclick="startAll()">
+      ▶️ تشغيل الكل (Squad تلقائي)
+    </button>
+    <button class="btn btn-danger" onclick="stopAll()">
+      ⏹️ إيقاف الكل
+    </button>
+    <button class="btn btn-info" onclick="openAddModal()">
+      ➕ إضافة حسابات
+    </button>
+    <button class="btn btn-ghost" onclick="refreshNow()">
+      🔄 تحديث الآن
+    </button>
+  </section>
+
+  <!-- GRID -->
+  <section class="grid">
+
+    <!-- Accounts panel -->
+    <div class="panel">
+      <div class="panel-head">
+        <h2>🎯 الحسابات</h2>
+        <span class="counter" id="acc-counter">0</span>
+      </div>
+      <div class="accounts-list" id="accounts-list">
+        <div class="empty">لا توجد حسابات — اضغط <b>إضافة حسابات</b></div>
+      </div>
+    </div>
+
+    <!-- Logs panel -->
+    <div class="panel logs-panel">
+      <div class="panel-head">
+        <h2>📜 السجلات المباشرة</h2>
+        <div class="logs-tools">
+          <select id="logs-filter">
+            <option value="">كل الحسابات</option>
+          </select>
+          <button class="mini-btn" onclick="clearLogsView()">🧹</button>
+        </div>
+      </div>
+      <div class="logs-box" id="logs-box">
+        <div class="log-line muted">[في انتظار النشاط...]</div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<!-- ADD MODAL -->
+<div class="modal" id="add-modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>➕ إضافة حسابات Guest</h3>
+      <button class="close" onclick="closeAddModal()">✖</button>
+    </div>
+    <p class="hint">
+      أدخل كل حساب في سطر بصيغة <code>UID:PASSWORD</code> (أو UID مسافة PASSWORD)
+    </p>
+    <textarea id="add-input" rows="9"
+              placeholder="1234567890:abcdef0123456789&#10;9876543210:zyxwvutsrqpo"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeAddModal()">إلغاء</button>
+      <button class="btn btn-success" onclick="submitAdd()">
+        💾 إضافة
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
